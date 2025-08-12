@@ -9,9 +9,9 @@ public class GoodOutputs {
 
     private ArrayList<ArrayList<Double>> goodValues;
 
-    public static GoodOutputs getInstance() {
+    public static synchronized GoodOutputs getInstance() {
         if (instance == null)
-            instance = new GoodOutputs();
+            instance = new GoodOutputs();   
 
         return instance;
     }
@@ -102,9 +102,14 @@ public class GoodOutputs {
     }
 
     public ArrayList<Double> getGoodOutput(String letter) {
-        char charLetter = letter.charAt(0);
+        if (letter == null || letter.length() != 1) {
+            throw new IllegalArgumentException("Input must be a single uppercase letter A-Z.");
+        }
+        char charLetter = Character.toUpperCase(letter.charAt(0));
         int index = ((int) charLetter) - 65;
-
+        if (index < 0 || index >= goodValues.size()) {
+            throw new IllegalArgumentException("Input must be a single uppercase letter A-Z.");
+        }
         return goodValues.get(index);
     }
 
